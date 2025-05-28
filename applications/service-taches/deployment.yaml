@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: service-tache
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: service-tache
+  template:
+    metadata:
+      labels:
+        app: service-tache
+    spec:
+      containers:
+      - name: service-tache
+        image: imendrd/service-tache:latest
+        ports:
+        - containerPort: 3001

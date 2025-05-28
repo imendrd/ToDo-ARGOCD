@@ -1,0 +1,28 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: todo-applicationset
+  namespace: argocd
+spec:
+  generators:
+  - git:
+      repoURL: 'https://github.com/imendrd/ToDo-ARGOCD.git'
+      revision: main
+      directories:
+      - path: 'applications/*'
+  template:
+    metadata:
+      name: '{{path.basename}}'
+    spec:
+      project: default
+      source:
+        repoURL: 'https://github.com/imendrd/ToDo-ARGOCD.git'
+        targetRevision: main
+        path: '{{path}}'
+      destination:
+        server: 'https://kubernetes.default.svc'
+        namespace: argocd
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true

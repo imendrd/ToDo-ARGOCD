@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: service-utilisateur
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: service-utilisateur
+  template:
+    metadata:
+      labels:
+        app: service-utilisateur
+    spec:
+      containers:
+      - name: service-utilisateur
+        image: imendrd/service-utilisateur:latest
+        ports:
+        - containerPort: 3000
