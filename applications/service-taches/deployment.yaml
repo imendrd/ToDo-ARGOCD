@@ -14,6 +14,6 @@ spec:
     spec:
       containers:
       - name: service-tache
-        image: imendrd/service-tache:latest
+        image: imend/service-tache
         ports:
         - containerPort: 3001

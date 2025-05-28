@@ -14,6 +14,6 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: shameed1910/angular-demo
+        image: imend/frontend
         ports:
         - containerPort: 80
