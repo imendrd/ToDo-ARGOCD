@@ -1,28 +1,28 @@
-apiVersion: argoproj.io/v1alpha1
-kind: ApplicationSet
+apiVersion: argoproj.io/v1alpha1  # Version de l'API utilisée pour ApplicationSet
+kind: ApplicationSet              # Type de ressource Argo CD permettant de générer plusieurs applications
 metadata:
-  name: todo-applicationset
-  namespace: argocd
+  name: todo-applicationset       # Nom de l'ApplicationSet
+  namespace: argocd               # Namespace Argo CD où l'objet sera créé
 spec:
   generators:
   - git:
-      repoURL: 'https://github.com/imendrd/ToDo-ARGOCD.git'
-      revision: main
+      repoURL: 'https://github.com/imendrd/ToDo-ARGOCD.git'  # Dépôt Git contenant les manifestes
+      revision: main                                         # Branche du dépôt à surveiller
       directories:
-      - path: 'applications/*'
+      - path: 'applications/*'                               # Tous les sous-dossiers de 'applications/' seront pris en compte
   template:
     metadata:
-      name: '{{path.basename}}'
+      name: '{{path.basename}}'                              # Le nom de chaque application générée sera basé sur le nom du dossier
     spec:
-      project: default
+      project: default                                       # Projet Argo CD utilisé (par défaut)
       source:
-        repoURL: 'https://github.com/imendrd/ToDo-ARGOCD.git'
-        targetRevision: main
-        path: '{{path}}'
+        repoURL: 'https://github.com/imendrd/ToDo-ARGOCD.git'  # Dépôt Git source des manifests
+        targetRevision: main                                   # Branche ciblée
+        path: '{{path}}'                                       # Le chemin est dynamique, basé sur chaque sous-dossier trouvé
       destination:
-        server: 'https://kubernetes.default.svc'
-        namespace: argocd
+        server: 'https://kubernetes.default.svc'              # Cible le cluster Kubernetes actuel
+        namespace: argocd                                     # Namespace de déploiement
       syncPolicy:
         automated:
-          prune: true
-          selfHeal: true
+          prune: true        # Supprime les ressources obsolètes qui ne sont plus dans Git
+          selfHeal: true     # Restaure automatiquement les ressources modifiées manuellement
